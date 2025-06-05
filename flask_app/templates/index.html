@@ -3,84 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sentiment Analysis</title>
+    <title>Sentiment Analyzer Pro</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            text-align: center;
-            padding: 20px;
+            font-family: 'Inter', sans-serif;
         }
-        .container {
-            max-width: 500px;
-            margin: auto;
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        /* Custom styles for loading spinner if needed in future */
+        .loader {
+            border-top-color: #3498db;
+            -webkit-animation: spin 1s linear infinite;
+            animation: spin 1s linear infinite;
         }
-        h1 {
-            color: #333;
+        @-webkit-keyframes spin {
+            0% { -webkit-transform: rotate(0deg); }
+            100% { -webkit-transform: rotate(360deg); }
         }
-        textarea {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            resize: none;
-            font-size: 16px;
-        }
-        button {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            margin-top: 10px;
-            cursor: pointer;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-        .result {
-            margin-top: 20px;
-            font-size: 22px;
-            font-weight: bold;
-            padding: 10px;
-            border-radius: 5px;
-        }
-        .positive {
-            color: #155724;
-            background-color: #d4edda;
-            border: 1px solid #c3e6cb;
-        }
-        .negative {
-            color: #721c24;
-            background-color: #f8d7da;
-            border: 1px solid #f5c6cb;
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
-<body>
+<body class="bg-gradient-to-br from-slate-900 to-slate-800 min-h-screen flex flex-col items-center justify-center p-4 selection:bg-sky-500 selection:text-white">
 
-    <div class="container">
-        <h1>Sentiment Analysis</h1>
-        <form action="/predict" method="POST">
-            <label for="text">Write text:</label><br>
-            <textarea id="text" name="text" rows="5" placeholder="Enter your text here..."></textarea><br>
-            <button type="submit">Predict</button>
+    <div class="bg-slate-800 shadow-2xl rounded-xl p-6 md:p-10 w-full max-w-lg transform transition-all duration-500 hover:scale-105">
+        <!-- Header Section -->
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-sky-400 mb-2">Sentiment Analyzer</h1>
+            <p class="text-slate-400 text-lg">Instantly analyze the sentiment of the text.</p>
+        </div>
+
+        <!-- Form Section -->
+        <form action="/predict" method="POST" id="sentimentForm">
+            <div class="mb-6">
+                <label for="text" class="block mb-2 text-sm font-medium text-slate-300">Enter Text Below:</label>
+                <textarea id="text" name="text" rows="6" class="bg-slate-700 border border-slate-600 text-slate-200 text-sm rounded-lg focus:ring-sky-500 focus:border-sky-500 block w-full p-3.5 placeholder-slate-500 transition-colors duration-300" placeholder="Type or paste your text here..."></textarea>
+            </div>
+
+            <button type="submit" class="w-full text-white bg-sky-600 hover:bg-sky-700 focus:ring-4 focus:outline-none focus:ring-sky-800 font-medium rounded-lg text-md px-5 py-3 text-center transition-all duration-300 ease-in-out transform hover:scale-105 active:scale-95 shadow-lg hover:shadow-sky-500/50">
+                Analyze Sentiment
+            </button>
         </form>
 
+        <!-- Result Section -->
         {% if result is not none %}
-            <div class="result {% if result == 1 %}positive{% else %}negative{% endif %}">
+            <div id="resultArea" class="mt-8 p-5 rounded-lg shadow-md text-center text-lg font-semibold transition-all duration-500 ease-in-out
+                {% if result == 1 %} bg-emerald-500/20 border border-emerald-500 text-emerald-300 {% else %} bg-red-500/20 border border-red-500 text-red-300 {% endif %}">
                 {% if result == 1 %}
-                    😊 Positive Sentiment
+                    <span>😊 The text appears to be <strong class="font-bold">Neutral or Positive</strong>.</span>
                 {% else %}
-                    😞 Negative Sentiment
+                    <span>😞 The text appears to be <strong class="font-bold">Negative</strong>.</span>
                 {% endif %}
             </div>
         {% endif %}
+
+         <!-- Placeholder for dynamic results (if you switch to JS-based form submission) -->
+        <!-- <div id="dynamicResultArea" class="mt-8 p-5 rounded-lg shadow-md text-center text-lg font-semibold hidden"> -->
+            <!-- Content will be injected here by JavaScript -->
+        <!-- </div> -->
+
     </div>
 
 </body>
